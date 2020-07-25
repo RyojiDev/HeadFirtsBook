@@ -13,12 +13,15 @@ namespace CatarinaFestas
     public partial class Form1 : Form
     {
         DinnerParty dinnerParty;
+        BirthdayParty birthdayParty;
         public Form1()
         {
             InitializeComponent();
-           
-           
-
+            dinnerParty = new DinnerParty((int)numericUpDown1.Value, chkOpcaoSaudavel.Checked, chkDecoracaoChique.Checked);
+            DisplayDinnerPartyCost();
+            birthdayParty = new BirthdayParty((int)numberOfPeapleB.Value,
+                chkChic.Checked, txtCakeWriting.Text);
+            DisplayBirthdayPartCost();
         }
 
         private void DisplayDinnerPartyCost()
@@ -30,64 +33,6 @@ namespace CatarinaFestas
         private void Form1_Load(object sender, EventArgs e)
         {
 
-        }
-
-        private void CarregarTab_load(object sender, EventArgs e)
-        {
-            dinnerParty = new DinnerParty((int)numericUpDown1.Value, chkOpcaoSaudavel.Checked, chkDecoracaoChique.Checked);
-            dinnerParty.SetNumberOfPeople(5);
-            dinnerParty.CalculateCostOfDecorations(chkDecoracaoChique.Checked);
-            dinnerParty.SetHealthOption(chkOpcaoSaudavel.Checked);
-            DisplayDinnerPartyCost();
-        }
-
-        private void Tbc_Load(object sender, EventArgs e)
-        {
-            if (numberOfPeaple.Value > 0 || chkNormal.Checked || chkChic.Checked)
-            {
-                if (chkWriteonCake.Checked)
-                {
-                    numberWords.Visible = true;
-                }
-                if (chkNormal.Checked || chkChic.Checked)
-                {
-                    BirthdayParty birthday = new BirthdayParty();
-                    if (chkNormal.Checked)
-                    {
-                        if (chkChic.Checked == false) 
-                        { 
-                        lblRateValue.Visible = true;
-                        lblRateValue.Text = "30,00 R$";
-                        birthday.NumberOfPeople = (int)numberOfPeaple.Value;
-                        birthday.CalculateCostOfDecorations(Convert.ToDecimal(lblNormal.Text.Replace("R$","")),Convert.ToDecimal(lblRateValue.Text.Replace("R$","")));
-                        lblTotalValue.Visible = true;
-                        lblTotalValue.Text = birthday.CalculateCost((int)numberWords.Value);
-                        
-                        }
-                    }
-                    else if(chkChic.Checked)
-                    {
-                        chkNormal.Checked = false;
-                        lblRateValue.Visible = true;
-                        lblRateValue.Text = "50,00 R$";
-                        birthday.NumberOfPeople = (int)numberOfPeaple.Value;
-                        birthday.CalculateCostOfDecorations(Convert.ToDecimal(lblChic.Text.Replace("R$", "")), Convert.ToDecimal(lblRateValue.Text.Replace("R$", "")));
-                        lblTotalValue.Visible = true;
-                        lblTotalValue.Text = birthday.CalculateCost((int)numberWords.Value);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Não tem opção marcada", "alerta");
-                        Visible = false;
-                    }
-                }
-               
-            }
-        }
-
-        private void tbcDinnerParty_Click(object sender, EventArgs e)
-        {
-          
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
@@ -106,6 +51,31 @@ namespace CatarinaFestas
         {
             dinnerParty.SetHealthOption(chkOpcaoSaudavel.Checked);
             DisplayDinnerPartyCost();
+        }
+
+        private void DisplayBirthdayPartCost()
+        {
+            birthdayParty.CakeWriting = txtCakeWriting.Text;
+            decimal cost = birthdayParty.CalculateCost();
+            lblTotalValue.Text = cost.ToString("c");
+        }
+
+        private void numberOfPeapleB_ValueChanged(object sender, EventArgs e)
+        {
+            birthdayParty.NumberOfPeople = (int)numberOfPeapleB.Value;
+            DisplayBirthdayPartCost();
+        }
+
+        private void chkChic_CheckedChanged(object sender, EventArgs e)
+        {
+            birthdayParty.CalculateCostOfDecorations(chkChic.Checked);
+            DisplayBirthdayPartCost();
+        }
+
+        private void chkWriteonCake_CheckedChanged(object sender, EventArgs e)
+        {
+            txtCakeWriting.Visible = true;
+            DisplayBirthdayPartCost();
         }
     }
 }
