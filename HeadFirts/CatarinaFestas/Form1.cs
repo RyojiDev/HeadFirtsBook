@@ -37,7 +37,7 @@ namespace CatarinaFestas
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            dinnerParty.SetNumberOfPeople((int)numericUpDown1.Value);
+            dinnerParty.NumberOfPeople = ((int)numericUpDown1.Value);
             DisplayDinnerPartyCost();
         }
 

@@ -7,11 +7,21 @@ using System.Windows.Forms;
 
 namespace CatarinaFestas
 {
-    public class BirthdayParty
+    public class BirthdayParty : Party
     {
-        private int numberOfPeople { get; set; }
-        public const int CostOfFoodPerPerson = 25;
-        public int NumberOfPeople
+
+        public BirthdayParty(int numberOfPeople, bool fancyDecorations, string cakeWriting) : base(numberOfPeople, fancyDecorations)
+        {
+            CalculateCakeSize();
+            this.numberOfPeople = numberOfPeople;
+            this.fancyDecorations = fancyDecorations;
+            this.cakeWiriting = cakeWriting;
+            CalculateCostOfDecorations(fancyDecorations);
+        }
+
+        private int numberOfPeople;
+     
+        public override int NumberOfPeople
         {
             get { return this.numberOfPeople; }
             set
@@ -23,17 +33,16 @@ namespace CatarinaFestas
             }
         }
         private bool fancyDecorations;
-        public decimal CostOfDecorations { get; set; }
+      
         public int CakeSize { get; set; }
 
-        private string cakeWiriting;
+        private string cakeWiriting = "";
 
         public string CakeWriting
         {
             get { return this.cakeWiriting; }
             set
             {
-                
                 int maxLength;
                 if (CakeSize == 8)
                     maxLength = 16;
@@ -51,14 +60,6 @@ namespace CatarinaFestas
             }
         }
 
-        public BirthdayParty(int numberOfPeople, bool fancyDecorations,string cakeWriting)
-        {
-            this.numberOfPeople = numberOfPeople;
-            this.fancyDecorations = fancyDecorations;
-            this.cakeWiriting = cakeWriting;
-            CalculateCostOfDecorations(fancyDecorations);
-        }
-
         private void CalculateCakeSize()
         {
             if (NumberOfPeople <= 4)
@@ -67,17 +68,7 @@ namespace CatarinaFestas
                 CakeSize = 16;
         }
 
-
-        public void  CalculateCostOfDecorations(bool fancy)
-        {
-            fancyDecorations = fancy;
-            if (fancy)
-                CostOfDecorations = (NumberOfPeople * 15.00M) + 50M;
-            else
-                CostOfDecorations = (NumberOfPeople * 7.50M) + 30M;
-        }
-
-        public decimal CalculateCost()
+        public   decimal CalculateCost()
         {
             decimal totalCost = CostOfDecorations + (CostOfFoodPerPerson * NumberOfPeople);
             decimal cakeCost;
@@ -87,7 +78,5 @@ namespace CatarinaFestas
                 cakeCost = 75 + CakeWriting.Length * .25M;
             return totalCost + cakeCost;
         }
-
-
     }
 }

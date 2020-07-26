@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace CatarinaFestas
 {
-    public class DinnerParty
+    public class DinnerParty : Party
     {
-        public DinnerParty(int numberOfPeople, bool helthyoption, bool fancyDecorations)
+        private bool fancyDecorations;
+        public DinnerParty(int numberOfPeople, bool helthyoption, bool fancyDecorations): base(numberOfPeople,fancyDecorations)
         {
             this.NumberOfPeople = numberOfPeople;
             this.fancyDecorations = fancyDecorations;
@@ -16,36 +17,13 @@ namespace CatarinaFestas
             CalculateCostOfDecorations(fancyDecorations);
         }
         
-        private bool fancyDecorations;
-        public const int CostOfFoofPerPerson = 25;
-        private int numberOfPeople;
-        public int NumberOfPeople
-        {
-            get { return numberOfPeople; }
-            set {
-                numberOfPeople = value;
-                CalculateCostOfDecorations(fancyDecorations);
-            }
-        }
-
+   
         public void SetPartyOption(int people, bool fancy)
         {
             NumberOfPeople = people;
             CalculateCostOfDecorations(fancy);
         }
-
-        public int GetNumberOfPeople()
-        {
-            return NumberOfPeople;
-        }
-
-        public void SetNumberOfPeople(int people)
-        {
-            NumberOfPeople = people;
-        }
-
-        public decimal CostOfDecorations = 0;
-        public decimal CostOfBeveragePerPerson;
+ 
         public bool HealthyOption { get; set; }
 
 
@@ -62,22 +40,10 @@ namespace CatarinaFestas
             }
         }
 
-        public void CalculateCostOfDecorations(bool fancy)
-        {
-            if (fancy)
-            {
-                CostOfDecorations = (NumberOfPeople * 15.00M) + 50M;
-            }
-            else
-            {
-                CostOfDecorations = (NumberOfPeople * 7.50M) + 30M;
-            }
-        }
-
-        public decimal CalculateCost(bool helthyOption)
+        public override decimal CalculateCost(bool helthyOption)
         {
             decimal totalCost = CostOfDecorations +
-               ((CostOfBeveragePerPerson + CostOfFoofPerPerson)
+               ((CostOfBeveragePerPerson + CostOfFoodPerPerson)
                * NumberOfPeople);
             if (helthyOption)
             {
@@ -88,6 +54,7 @@ namespace CatarinaFestas
                 return totalCost;
             }
         }
+
     }
 
 }
